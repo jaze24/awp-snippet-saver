@@ -3,15 +3,13 @@ import connectDb from "~/db/connectDb.server";
 
 export async function action({ request }) {
   const form = await request.formData();
+  const formValues = Object.fromEntries(form);
   const db = await connectDb();
   try {
-    const newBook = await db.models.Book.create({ title: form.get("title") });
-    return redirect(`/books/${newBook._id}`);
+    const newSnippet = await db.models.Snippet.create(formValues);
+    return redirect(`/snippets/${newSnippet._id}`);
   } catch (error) {
-    return json(
-      { errors: error.errors, values: Object.fromEntries(form) },
-      { status: 400 }
-    );
+    return json({ errors: error.errors, values: formValues }, { status: 400 });
   }
 }
 
@@ -19,7 +17,7 @@ export default function CreateBook() {
   const actionData = useActionData();
   return (
     <div>
-      <h1>Create book</h1>
+      <h1>Create snippet</h1>
       <Form method="post">
         <label htmlFor="title" className="block">
           Title
