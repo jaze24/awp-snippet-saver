@@ -85,11 +85,11 @@ export default function SnippetPage() {
       </div>
       <p className="mb-4 text-slate-400 text-sm">
         <span>Created </span>
-        <time datetime={snippet.createdAt}>
+        <time dateTime={snippet.createdAt}>
           {new Date(snippet.createdAt).toLocaleDateString()}
         </time>
         <span> • Updated </span>
-        <time datetime={snippet.updatedAt}>
+        <time dateTime={snippet.updatedAt}>
           {new Date(snippet.updatedAt).toLocaleDateString()}
         </time>
       </p>

@@ -12,7 +12,7 @@ export default function Index() {
 
   return (
     <div className="grid grid-cols-12 gap-4">
-      <div className="col-span-3 rounded bg-slate-50 bg-slate-5 border border-slate-200">
+      <div className="col-span-3 rounded bg-slate-50 border border-slate-200">
         <div className="flex justify-between items-center border-b border-slate-200">
           <h1 className="text-2xl px-4 font-bold">
             <Link
@@ -81,7 +81,7 @@ export default function Index() {
           })}
         </ul>
       </div>
-      <div className="col-span-9 p-4 rounded bg-slate-50 bg-slate-5 border border-slate-200">
+      <div className="col-span-9 p-4 rounded bg-slate-50 border border-slate-200">
         <Outlet />
       </div>
     </div>

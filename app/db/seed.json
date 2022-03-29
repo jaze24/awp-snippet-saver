@@ -1,0 +1,32 @@
+{
+  "snippets": [
+    {
+      "title": "HTML Boilerplate",
+      "programmingLanguage": "HTML",
+      "code": "<html>\n</html>",
+      "description": "A basic template.\n\nAnd more description. _With emphasis_.\n\n- And\n- Items\n- In a list",
+      "favorite": false
+    },
+    {
+      "title": "CSS flex alignment",
+      "programmingLanguage": "CSS",
+      "code": "display: flex;",
+      "description": "Awesome layout trick.",
+      "favorite": false
+    },
+    {
+      "title": "Remix action",
+      "programmingLanguage": "JavaScript",
+      "code": "export function action({ request, params }) {}",
+      "description": "To process form submissions on/to the page.",
+      "favorite": true
+    },
+    {
+      "title": "Remix loader",
+      "programmingLanguage": "JavaScript",
+      "code": "export function loader({ request, params }) {}",
+      "description": "To load data required to render the page.",
+      "favorite": true
+    }
+  ]
+}
