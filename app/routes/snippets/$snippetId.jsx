@@ -31,8 +31,8 @@ export default function SnippetPage() {
   const snippet = useLoaderData();
   return (
     <div>
-      <div className="flex flex-row items-center justify-between">
-        <div className="flex flex-row items-center mb-4">
+      <div className="flex flex-row items-center justify-between mb-1">
+        <div className="flex flex-row items-center">
           <Form method="post">
             <button
               name="_action"
@@ -83,6 +83,16 @@ export default function SnippetPage() {
           </button>
         </Form>
       </div>
+      <p className="mb-4 text-slate-400 text-sm">
+        <span>Created </span>
+        <time datetime={snippet.createdAt}>
+          {new Date(snippet.createdAt).toLocaleDateString()}
+        </time>
+        <span> • Updated </span>
+        <time datetime={snippet.updatedAt}>
+          {new Date(snippet.updatedAt).toLocaleDateString()}
+        </time>
+      </p>
       <div className="relative my-3 rounded p-2 bg-slate-800 text-green-400 leading-6">
         <code className="absolute top-2 right-2 font-semibold text-sm text-slate-400">
           {snippet.programmingLanguage}
