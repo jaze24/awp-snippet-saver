@@ -14,10 +14,16 @@ export async function loader({ params }) {
 
 export async function action({ params, request }) {
   const formData = await request.formData();
-  if (formData.get("_action") == "delete") {
-    const db = await connectDb();
-    await db.models.Snippet.findByIdAndDelete(params.snippetId);
-    return redirect("/snippets");
+  const db = await connectDb();
+  switch (formData.get("_action")) {
+    case "delete":
+      await db.models.Snippet.findByIdAndDelete(params.snippetId);
+      return redirect("/snippets");
+    case "favorite":
+      const snippet = await db.models.Snippet.findById(params.snippetId);
+      snippet.favorite = !snippet.favorite;
+      await snippet.save();
+      return null;
   }
 }
 
@@ -26,7 +32,18 @@ export default function SnippetPage() {
   return (
     <div>
       <div className="flex flex-row items-start justify-between">
-        <h1 className="text-2xl font-bold mb-4">{snippet.title}</h1>
+        <div className="flex flex-row items-center mb-4">
+          <Form method="post">
+            <button
+              name="_action"
+              value="favorite"
+              type="submit"
+              className="mr-2 text-slate-400 hover:text-slate-700 transition-colors text-xl">
+              {snippet.favorite ? "★" : "☆"}
+            </button>
+          </Form>
+          <h1 className="text-2xl font-bold">{snippet.title}</h1>
+        </div>
         <Form method="post">
           <button
             name="_action"

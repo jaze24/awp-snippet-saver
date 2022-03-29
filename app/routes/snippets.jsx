@@ -34,12 +34,15 @@ export default function Index() {
                 <Link
                   to={snippet._id}
                   className={[
-                    "block p-4 hover:bg-slate-100 transition-colors border-slate-200",
+                    "block p-4 hover:bg-slate-100 transition-colors border-slate-200 flex flex-row justify-between items-center",
                     i > 0 && "border-t",
                   ]
                     .filter(Boolean)
                     .join(" ")}>
-                  {snippet.title}
+                  <span>{snippet.title}</span>
+                  <span className="text-slate-400">
+                    {snippet.favorite ? "★" : "☆"}
+                  </span>
                 </Link>
               </li>
             );
