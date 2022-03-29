@@ -39,9 +39,19 @@ export default function SnippetPage() {
           </button>
         </Form>
       </div>
-      <code>
-        <pre>{JSON.stringify(snippet, null, 2)}</pre>
-      </code>
+      <div className="relative my-3 rounded p-2 bg-slate-800 text-green-400 leading-6">
+        <code className="absolute top-2 right-2 font-semibold text-sm text-slate-400">
+          {snippet.programmingLanguage}
+        </code>
+        <code>
+          <pre>{snippet.code}</pre>
+        </code>
+      </div>
+      <div className="my-3">
+        <code>
+          <pre>{snippet.description}</pre>
+        </code>
+      </div>
     </div>
   );
 }
