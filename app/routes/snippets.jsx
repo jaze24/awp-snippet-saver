@@ -1,14 +1,31 @@
-import { Outlet, useLoaderData, Link } from "remix";
+import {
+  Outlet,
+  useLoaderData,
+  Link,
+  Form,
+  useSearchParams,
+  useSubmit,
+} from "remix";
 import connectDb from "~/db/connectDb.server.js";
 
-export async function loader() {
+export async function loader({ request }) {
+  const url = new URL(request.url);
+  const searchQuery = url.searchParams.get("q");
   const db = await connectDb();
-  const snippets = await db.models.Snippet.find();
+  const snippets = await db.models.Snippet.find(
+    searchQuery
+      ? {
+          title: { $regex: new RegExp(searchQuery, "i") },
+        }
+      : {}
+  );
   return snippets;
 }
 
 export default function Index() {
   const snippets = useLoaderData();
+  const [searchParams] = useSearchParams();
+  const submit = useSubmit();
 
   return (
     <div className="grid grid-cols-12 gap-4">
@@ -39,12 +56,41 @@ export default function Index() {
             </svg>
           </Link>
         </div>
+        <Form
+          method="get"
+          onChange={(e) => submit(e.currentTarget)}
+          className="border-b border-slate-200 flex flex-row items-center">
+          <input
+            type="search"
+            name="q"
+            placeholder="Search by title"
+            defaultValue={searchParams.get("q")}
+            className="p-2 flex-grow bg-slate-50"
+          />
+          <button
+            type="submit"
+            className="p-2 text-slate-400 hover:text-slate-600 transition-colors">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </button>
+        </Form>
         <ul>
           {snippets.map((snippet, i) => {
             return (
               <li key={snippet._id}>
                 <Link
-                  to={snippet._id}
+                  to={`${snippet._id}?${searchParams.toString()}`}
                   className={[
                     "block p-4 hover:bg-slate-100 transition-colors border-slate-200",
                     i > 0 && "border-t",

@@ -1,4 +1,11 @@
-import { useLoaderData, useCatch, json, Form, redirect } from "remix";
+import {
+  useLoaderData,
+  useCatch,
+  json,
+  Form,
+  redirect,
+  useSearchParams,
+} from "remix";
 import connectDb from "~/db/connectDb.server.js";
 
 export async function loader({ params }) {
@@ -29,11 +36,13 @@ export async function action({ params, request }) {
 
 export default function SnippetPage() {
   const snippet = useLoaderData();
+  const [searchParams] = useSearchParams();
+
   return (
     <div>
       <div className="flex flex-row items-center justify-between mb-1">
         <div className="flex flex-row items-center">
-          <Form method="post">
+          <Form method="post" action={"?" + searchParams.toString()}>
             <button
               name="_action"
               value="favorite"
