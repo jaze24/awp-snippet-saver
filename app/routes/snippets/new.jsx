@@ -39,7 +39,7 @@ export default function CreateSnippet() {
           </FormLabel>
           <select
             name="programmingLanguage"
-            className="p-2 appearance-none border-2 border-gray-200">
+            className="p-2 appearance-none border-2 border-slate-200">
             <option>HTML</option>
             <option>CSS</option>
             <option>JavaScript</option>
@@ -94,7 +94,7 @@ function Input({
     id: id,
     className: [
       "border-2 rounded px-2 py-1 w-full lg:w-1/2",
-      errorMessage ? "border-red-500" : "border-gray-200 ",
+      errorMessage ? "border-red-500" : "border-slate-200 ",
     ]
       .filter(Boolean)
       .join(" "),

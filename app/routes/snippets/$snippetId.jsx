@@ -1,4 +1,4 @@
-import { useLoaderData, useCatch, json } from "remix";
+import { useLoaderData, useCatch, json, Form, redirect } from "remix";
 import connectDb from "~/db/connectDb.server.js";
 
 export async function loader({ params }) {
@@ -12,11 +12,33 @@ export async function loader({ params }) {
   return json(snippet);
 }
 
-export default function BookPage() {
+export async function action({ params, request }) {
+  const formData = await request.formData();
+  if (formData.get("_action") == "delete") {
+    const db = await connectDb();
+    await db.models.Snippet.findByIdAndDelete(params.snippetId);
+    return redirect("/snippets");
+  }
+}
+
+export default function SnippetPage() {
   const snippet = useLoaderData();
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">{snippet.title}</h1>
+      <div className="flex flex-row items-start justify-between">
+        <h1 className="text-2xl font-bold mb-4">{snippet.title}</h1>
+        <Form method="post">
+          <button
+            name="_action"
+            value="delete"
+            type="submit"
+            title="Delete"
+            aria-label="Delete"
+            className="font-semibold text-xl text-white w-7 h-7 bg-red-500 transition-colors hover:bg-red-600 rounded">
+            &times;
+          </button>
+        </Form>
+      </div>
       <code>
         <pre>{JSON.stringify(snippet, null, 2)}</pre>
       </code>
