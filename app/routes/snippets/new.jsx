@@ -13,30 +13,110 @@ export async function action({ request }) {
   }
 }
 
-export default function CreateBook() {
+export default function CreateSnippet() {
   const actionData = useActionData();
   return (
     <div>
-      <h1>Create snippet</h1>
+      <h1 className="text-2xl font-bold">Create snippet</h1>
       <Form method="post">
-        <label htmlFor="title" className="block">
-          Title
-        </label>
-        <input
-          type="text"
+        <Input
           name="title"
+          label="Title"
           defaultValue={actionData?.values.title}
-          id="title"
-          className={
-            actionData?.errors.title ? "border-2 border-red-500" : null
-          }
+          errorMessage={actionData?.errors?.title?.message}
         />
-        {actionData?.errors.title && (
-          <p className="text-red-500">{actionData.errors.title.message}</p>
+
+        <Input
+          type="textarea"
+          name="code"
+          label="Code"
+          defaultValue={actionData?.values.code}
+          errorMessage={actionData?.errors?.code?.message}
+        />
+        <div className="my-3">
+          <FormLabel htmlFor="programmingLanguage">
+            Programming language
+          </FormLabel>
+          <select
+            name="programmingLanguage"
+            className="p-2 appearance-none border-2 border-gray-200">
+            <option>HTML</option>
+            <option>CSS</option>
+            <option>JavaScript</option>
+          </select>
+        </div>
+        <Input
+          type="textarea"
+          name="description"
+          label="Description"
+          defaultValue={actionData?.values.description}
+          errorMessage={actionData?.errors?.description?.message}
+        />
+
+        {Object.keys(actionData?.errors ?? {}).length > 0 && (
+          <ul className="mt-3 rounded bg-red-100 border-2 border-red-500 p-3 text-red-500 list-disc list-inside">
+            {Object.entries(actionData.errors).map(([key, value]) => (
+              <li key={key}>
+                <b>{key}:</b> {value.properties.message}
+              </li>
+            ))}
+          </ul>
         )}
-        <br />
-        <button type="submit">Save</button>
+        <div className="mt-3">
+          <Button type="submit">Save</Button>
+        </div>
       </Form>
     </div>
+  );
+}
+
+function Button({ type = "button", children }) {
+  return (
+    <button
+      type={type}
+      className="rounded bg-fuchsia-700 text-white font-bold px-3 py-2">
+      {children}
+    </button>
+  );
+}
+
+function Input({
+  name,
+  id = name,
+  type = "text",
+  label = name,
+  defaultValue,
+  errorMessage,
+}) {
+  const inputProps = {
+    name: name,
+    defaultValue: defaultValue,
+    id: id,
+    className: [
+      "border-2 rounded px-2 py-1 w-full lg:w-1/2",
+      errorMessage ? "border-red-500" : "border-gray-200 ",
+    ]
+      .filter(Boolean)
+      .join(" "),
+  };
+
+  return (
+    <div className="my-3">
+      <FormLabel>{label}</FormLabel>
+      {type === "textarea" ? (
+        <textarea {...inputProps} rows={10}></textarea>
+      ) : (
+        <input type={type} {...inputProps} />
+      )}
+      {errorMessage && <p className="mt-1 text-red-500">{errorMessage}</p>}
+    </div>
+  );
+}
+
+function FormLabel({ htmlFor, children }) {
+  return (
+    <label htmlFor={htmlFor} className="block font-semibold mb-1">
+      {children}
+    </label>
   );
 }

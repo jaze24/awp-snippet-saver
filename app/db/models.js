@@ -5,11 +5,23 @@ const { Schema } = mongoose;
 const snippetSchema = new Schema({
   title: {
     type: String,
-    required: true,
+    required: [true, "Gotta have a title"],
     minLength: [3, "That's too short"],
   },
-  code: String,
-  description: String,
+  programmingLanguage: {
+    type: String,
+    required: true,
+    enum: ["HTML", "CSS", "JavaScript"],
+  },
+  code: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  description: {
+    type: String,
+    trim: true,
+  },
   favorite: {
     type: Boolean,
     default: false,
