@@ -5,6 +5,7 @@ import {
   Form,
   useSearchParams,
   useSubmit,
+  useLocation,
 } from "remix";
 import connectDb from "~/db/connectDb.server.js";
 
@@ -59,6 +60,7 @@ export default function Index() {
         <Form
           method="get"
           onChange={(e) => submit(e.currentTarget)}
+          action={useLocation().pathname}
           className="border-b border-slate-200 flex flex-row items-center">
           <input
             type="search"
@@ -69,7 +71,7 @@ export default function Index() {
           />
           <button
             type="submit"
-            className="p-2 text-slate-400 hover:text-slate-600 transition-colors">
+            className="px-4 py-2 text-slate-400 hover:text-slate-600 transition-colors">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
