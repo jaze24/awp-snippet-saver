@@ -8,12 +8,17 @@ import {
   useSearchParams,
   useSubmit,
   useLocation,
+  useParams,
 } from "remix";
 import connectDb from "~/db/connectDb.server.js";
+
+const DEFAULT_SORT_FIELD = "updatedAt";
 
 export async function loader({ request }) {
   const url = new URL(request.url);
   const searchQuery = url.searchParams.get("q");
+  const sortField = url.searchParams.get("sort") ?? DEFAULT_SORT_FIELD;
+
   const db = await connectDb();
   const snippets = await db.models.Snippet.find(
     searchQuery
@@ -21,26 +26,29 @@ export async function loader({ request }) {
           title: { $regex: new RegExp(searchQuery, "i") },
         }
       : {}
-  );
+  ).sort({
+    [sortField]: sortField === "title" ? 1 : -1,
+  });
   return snippets;
 }
 
 export default function Index() {
   const location = useLocation();
-  const searchQuery = new URLSearchParams(location.search).get("q");
-  const snippets = useLoaderData();
   const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("q");
+  const params = useParams();
+  const snippets = useLoaderData();
   const submit = useSubmit();
   const searchFormRef = useRef();
 
   useEffect(() => {
-    if (!searchQuery) {
+    if (!location.search) {
       searchFormRef.current.reset();
     }
-  }, [searchQuery]);
+  }, [location.search]);
 
   return (
-    <div className="grid grid-cols-12 gap-4">
+    <div className="min-h-screen grid grid-cols-12 gap-4">
       <div className="col-span-3 rounded bg-slate-50 border border-slate-200">
         <div className="flex justify-between items-center border-b border-slate-200">
           <h1 className="text-2xl px-4 font-bold">
@@ -61,19 +69,35 @@ export default function Index() {
           onChange={(e) => submit(e.currentTarget)}
           ref={searchFormRef}
           action={location.pathname}
-          className="border-b border-slate-200 flex flex-row items-center">
-          <input
-            type="search"
-            name="q"
-            placeholder="Search by title"
-            defaultValue={searchParams.get("q")}
-            className="p-2 flex-grow bg-slate-50"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 text-slate-400 hover:text-slate-600 transition-colors">
-            <SearchIcon className="h-5 w-5" />
-          </button>
+          className="border-b border-slate-200">
+          <div className="flex flex-row items-center border-b border-slate-200">
+            <input
+              type="search"
+              name="q"
+              placeholder="Search by title"
+              defaultValue={searchQuery}
+              className="px-4 py-2 flex-grow bg-slate-50 isolate"
+            />
+            <button
+              type="submit"
+              className="px-4 py-2 text-slate-400 hover:text-slate-600 transition-colors">
+              <SearchIcon className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="flex flex-row items-center">
+            <span className="pl-4 text-sm text-slate-400 flex-grow">
+              Sort by:
+            </span>
+            <SortFilter value="title" searchParams={searchParams}>
+              Title
+            </SortFilter>
+            <SortFilter value="updatedAt" searchParams={searchParams}>
+              Updated
+            </SortFilter>
+            <SortFilter value="favorite" searchParams={searchParams}>
+              Favorite
+            </SortFilter>
+          </div>
         </Form>
         <ul>
           {snippets.map((snippet, i) => {
@@ -84,6 +108,7 @@ export default function Index() {
                   className={[
                     "block p-4 hover:bg-slate-100 transition-colors border-slate-200",
                     i > 0 && "border-t",
+                    params.snippetId === snippet._id && "bg-slate-100",
                   ]
                     .filter(Boolean)
                     .join(" ")}>
@@ -112,6 +137,30 @@ export default function Index() {
       <div className="col-span-9 p-4 rounded bg-slate-50 border border-slate-200">
         <Outlet />
       </div>
+    </div>
+  );
+}
+
+function SortFilter({ value, searchParams, children }) {
+  const defaultChecked =
+    searchParams.get("sort") === value ||
+    (!searchParams.get("sort") && value === DEFAULT_SORT_FIELD);
+  const id = `sort-${value}`;
+  return (
+    <div>
+      <input
+        type="radio"
+        name="sort"
+        defaultChecked={defaultChecked}
+        value={value}
+        id={id}
+        className="peer sr-only"
+      />
+      <label
+        htmlFor={id}
+        className="block cursor-pointer text-sm hover:text-slate-600 border-l border-slate-200 px-4 py-2 transition-colors text-slate-400 peer-checked:text-slate-600 peer-checked:bg-slate-100">
+        {children}
+      </label>
     </div>
   );
 }
