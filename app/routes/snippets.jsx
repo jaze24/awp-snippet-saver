@@ -48,8 +48,8 @@ export default function Index() {
   }, [location.search]);
 
   return (
-    <div className="min-h-screen grid grid-cols-12 gap-4">
-      <div className="col-span-3 rounded bg-slate-50 border border-slate-200">
+    <div className="min-h-screen grid grid-cols-12">
+      <div className="col-span-3 rounded-l bg-slate-50 border border-slate-200">
         <div className="flex justify-between items-center border-b border-slate-200">
           <h1 className="text-2xl px-4 font-bold">
             <Link
@@ -99,7 +99,7 @@ export default function Index() {
             </SortFilter>
           </div>
         </Form>
-        <ul>
+        <ul className="border-b border-slate-200">
           {snippets.map((snippet, i) => {
             return (
               <li key={snippet._id}>
@@ -108,7 +108,8 @@ export default function Index() {
                   className={[
                     "block p-4 hover:bg-slate-100 transition-colors border-slate-200",
                     i > 0 && "border-t",
-                    params.snippetId === snippet._id && "bg-slate-100",
+                    params.snippetId === snippet._id &&
+                      "bg-slate-100 shadow-inner",
                   ]
                     .filter(Boolean)
                     .join(" ")}>
@@ -134,7 +135,7 @@ export default function Index() {
           })}
         </ul>
       </div>
-      <div className="col-span-9 p-4 rounded bg-slate-50 border border-slate-200">
+      <div className="col-span-9 px-6 py-4 rounded-r bg-slate-50 border-t border-r border-b border-slate-200">
         <Outlet />
       </div>
     </div>
@@ -158,7 +159,7 @@ function SortFilter({ value, searchParams, children }) {
       />
       <label
         htmlFor={id}
-        className="block cursor-pointer text-sm hover:text-slate-600 border-l border-slate-200 px-4 py-2 transition-colors text-slate-400 peer-checked:text-slate-600 peer-checked:bg-slate-100">
+        className="block cursor-pointer text-sm hover:text-slate-600 border-l border-slate-200 px-4 py-2 transition-colors text-slate-400 peer-checked:text-slate-600 peer-checked:bg-slate-100 peer-checked:shadow-inner">
         {children}
       </label>
     </div>
