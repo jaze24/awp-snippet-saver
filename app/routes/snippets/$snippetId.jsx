@@ -11,7 +11,7 @@ import connectDb from "~/db/connectDb.server.js";
 
 export async function loader({ params }) {
   const db = await connectDb();
-  const snippet = await db.models.Snippet.findById(params.snippetId);
+  const snippet = await db.models.Snippet.findById(params.snippetId).lean();
   if (!snippet) {
     throw new Response(`Couldn't find snippet with id ${params.snippetId}`, {
       status: 404,

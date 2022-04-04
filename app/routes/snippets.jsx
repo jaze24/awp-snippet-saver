@@ -26,9 +26,11 @@ export async function loader({ request }) {
           title: { $regex: new RegExp(searchQuery, "i") },
         }
       : {}
-  ).sort({
-    [sortField]: sortField === "title" ? 1 : -1,
-  });
+  )
+    .sort({
+      [sortField]: sortField === "title" ? 1 : -1,
+    })
+    .lean();
   return snippets;
 }
 
