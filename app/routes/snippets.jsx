@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   Outlet,
   useLoaderData,
@@ -24,9 +25,18 @@ export async function loader({ request }) {
 }
 
 export default function Index() {
+  const location = useLocation();
+  const searchQuery = new URLSearchParams(location.search).get("q");
   const snippets = useLoaderData();
   const [searchParams] = useSearchParams();
   const submit = useSubmit();
+  const searchFormRef = useRef();
+
+  useEffect(() => {
+    if (!searchQuery) {
+      searchFormRef.current.reset();
+    }
+  }, [searchQuery]);
 
   return (
     <div className="grid grid-cols-12 gap-4">
@@ -60,7 +70,8 @@ export default function Index() {
         <Form
           method="get"
           onChange={(e) => submit(e.currentTarget)}
-          action={useLocation().pathname}
+          ref={searchFormRef}
+          action={location.pathname}
           className="border-b border-slate-200 flex flex-row items-center">
           <input
             type="search"
