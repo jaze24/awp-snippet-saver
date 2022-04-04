@@ -34,7 +34,7 @@ export async function loader({ request }) {
   return snippets;
 }
 
-export default function Index() {
+export default function SnippetsIndex() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("q");
@@ -62,7 +62,8 @@ export default function Index() {
           </h1>
           <Link
             to="/snippets/new"
-            className="text-slate-400 hover:text-slate-600 transition-colors p-4 border-l border-slate-200">
+            tabIndex={0}
+            className="block isolate text-slate-400 hover:text-slate-600 transition-colors p-4 border-l border-slate-200">
             <PlusIcon className="h-6 w-6" />
           </Link>
         </div>
@@ -82,7 +83,7 @@ export default function Index() {
             />
             <button
               type="submit"
-              className="px-4 py-2 text-slate-400 hover:text-slate-600 transition-colors">
+              className="px-4 py-2 text-slate-400 hover:text-slate-600 transition-colors isolate">
               <SearchIcon className="h-5 w-5" />
             </button>
           </div>
@@ -161,6 +162,7 @@ function SortFilter({ value, searchParams, children }) {
       />
       <label
         htmlFor={id}
+        tabIndex={0}
         className="block cursor-pointer text-sm hover:text-slate-600 border-l border-slate-200 px-4 py-2 transition-colors text-slate-400 peer-checked:text-slate-600 peer-checked:bg-slate-100 peer-checked:shadow-inner">
         {children}
       </label>
