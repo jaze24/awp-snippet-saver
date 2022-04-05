@@ -4,9 +4,11 @@ import {
   json,
   Form,
   redirect,
+  Link,
+  useLocation,
   useSearchParams,
 } from "remix";
-import { TrashIcon, StarIcon } from "@heroicons/react/outline";
+import { TrashIcon, StarIcon, PencilAltIcon } from "@heroicons/react/outline";
 import connectDb from "~/db/connectDb.server.js";
 
 export async function loader({ params }) {
@@ -37,13 +39,13 @@ export async function action({ params, request }) {
 
 export default function SnippetPage() {
   const snippet = useLoaderData();
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
 
   return (
     <div>
-      <div className="flex flex-row items-center justify-between mb-1">
-        <div className="flex flex-row items-center">
-          <Form method="post" action={"?" + searchParams.toString()}>
+      <div className="flex flex-row items-center mb-1">
+        <div className="flex flex-grow flex-row items-center">
+          <Form method="post" action={location.search}>
             <button
               name="_action"
               value="favorite"
@@ -61,6 +63,11 @@ export default function SnippetPage() {
           </Form>
           <h1 className="text-2xl font-bold">{snippet.title}</h1>
         </div>
+        <Link
+          to={"edit" + location.search}
+          className="block p-1 transition-colors text-slate-400 hover:text-slate-600">
+          <PencilAltIcon className="h-5 w-5" />
+        </Link>
         <Form method="post">
           <button
             name="_action"
@@ -68,7 +75,7 @@ export default function SnippetPage() {
             type="submit"
             title="Delete"
             aria-label="Delete"
-            className="transition-colors text-slate-400 hover:text-red-600">
+            className="block p-1 transition-colors text-slate-400 hover:text-red-600">
             <TrashIcon className="h-5 w-5" />
           </button>
         </Form>
