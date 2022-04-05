@@ -64,7 +64,7 @@ export default function SnippetsIndex() {
             to="/snippets/new"
             tabIndex={0}
             className="block isolate text-slate-400 hover:text-slate-600 transition-colors p-4 border-l border-slate-200">
-            <PlusIcon className="h-6 w-6" />
+            <PlusIcon width={24} height={24} />
           </Link>
         </div>
         <Form
@@ -84,7 +84,7 @@ export default function SnippetsIndex() {
             <button
               type="submit"
               className="px-4 py-2 text-slate-400 hover:text-slate-600 transition-colors isolate">
-              <SearchIcon className="h-5 w-5" />
+              <SearchIcon width={20} height={20} />
             </button>
           </div>
           <div className="flex flex-row items-center">
@@ -123,7 +123,8 @@ export default function SnippetsIndex() {
                         snippet.favorite ? "text-amber-500" : "text-slate-400",
                       ]}>
                       <StarIcon
-                        className="h-5 w-5"
+                        width={20}
+                        height={20}
                         stroke={snippet.favorite ? "none" : "currentColor"}
                         fill={snippet.favorite ? "currentColor" : "none"}
                       />

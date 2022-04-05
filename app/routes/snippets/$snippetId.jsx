@@ -6,7 +6,6 @@ import {
   redirect,
   Link,
   useLocation,
-  useSearchParams,
 } from "remix";
 import { TrashIcon, StarIcon, PencilAltIcon } from "@heroicons/react/outline";
 import connectDb from "~/db/connectDb.server.js";
@@ -66,7 +65,7 @@ export default function SnippetPage() {
         <Link
           to={"edit" + location.search}
           className="block p-1 transition-colors text-slate-400 hover:text-slate-600">
-          <PencilAltIcon className="h-5 w-5" />
+          <PencilAltIcon width={20} height={20} />
         </Link>
         <Form method="post">
           <button
@@ -76,7 +75,7 @@ export default function SnippetPage() {
             title="Delete"
             aria-label="Delete"
             className="block p-1 transition-colors text-slate-400 hover:text-red-600">
-            <TrashIcon className="h-5 w-5" />
+            <TrashIcon width={20} height={20} />
           </button>
         </Form>
       </div>
