@@ -32,7 +32,7 @@ export default function EditSnippetForm({
             submittedValues?.programmingLanguage ??
             defaultValues?.programmingLanguage
           }
-          className="p-2 appearance-none border border-slate-200">
+          className="p-2 appearance-none border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700">
           {["HTML", "CSS", "JavaScript"].map((lang) => {
             return <option key={lang}>{lang}</option>;
           })}
@@ -87,8 +87,10 @@ function Input({
     defaultValue: defaultValue,
     id: id,
     className: [
-      "border rounded px-2 py-1 w-full lg:w-1/2",
-      errorMessage ? "border-red-500" : "border-slate-200 ",
+      "border rounded px-2 py-1 w-full lg:w-1/2 bg-white dark:bg-slate-700",
+      errorMessage
+        ? "border-red-500"
+        : "border-slate-200 dark:border-slate-800",
     ]
       .filter(Boolean)
       .join(" "),
