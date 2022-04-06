@@ -25,7 +25,7 @@ export default function Seed() {
   const { snippetsCount, defaultSnippetsCount } = useLoaderData();
   return (
     <div className="min-h-screen grid place-items-center">
-      <div className="rounded border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-6 shadow-lg">
+      <div className="rounded border-2 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 p-6 shadow-lg">
         <h1 className="text-2xl font-bold mb-3">Seeding the database</h1>
         <p>
           You currently have <b>{snippetsCount} snippets</b> in your database.

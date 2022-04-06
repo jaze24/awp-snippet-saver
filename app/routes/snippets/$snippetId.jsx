@@ -50,8 +50,8 @@ export default function SnippetPage() {
               value="favorite"
               type="submit"
               className={[
-                "block mr-2 hover:text-slate-700 transition-colors",
-                snippet.favorite ? "text-amber-500" : "text-slate-400",
+                "block mr-2 hover:text-zinc-700 transition-colors",
+                snippet.favorite ? "text-amber-500" : "text-zinc-400",
               ].join(" ")}>
               <StarIcon
                 className="h-6 w-6"
@@ -64,7 +64,7 @@ export default function SnippetPage() {
         </div>
         <Link
           to={"edit" + location.search}
-          className="block p-1 transition-colors text-slate-400 hover:text-slate-600">
+          className="block p-1 transition-colors text-zinc-400 hover:text-zinc-600">
           <PencilAltIcon width={20} height={20} />
         </Link>
         <Form method="post">
@@ -74,12 +74,12 @@ export default function SnippetPage() {
             type="submit"
             title="Delete"
             aria-label="Delete"
-            className="block p-1 transition-colors text-slate-400 hover:text-red-600">
+            className="block p-1 transition-colors text-zinc-400 hover:text-red-600">
             <TrashIcon width={20} height={20} />
           </button>
         </Form>
       </div>
-      <p className="mb-4 text-slate-400 text-sm">
+      <p className="mb-4 text-zinc-400 text-sm">
         <span>Created </span>
         <time dateTime={snippet.createdAt}>
           {new Date(snippet.createdAt).toLocaleDateString()}
@@ -89,8 +89,8 @@ export default function SnippetPage() {
           {new Date(snippet.updatedAt).toLocaleDateString()}
         </time>
       </p>
-      <div className="relative my-3 rounded p-2 bg-slate-800 dark:bg-slate-900 text-green-400 leading-6">
-        <code className="absolute top-2 right-2 font-semibold text-sm text-slate-400">
+      <div className="relative my-3 rounded p-2 bg-zinc-800 dark:bg-zinc-900 text-green-400 leading-6">
+        <code className="absolute top-2 right-2 font-semibold text-sm text-zinc-400">
           {snippet.programmingLanguage}
         </code>
         <code>

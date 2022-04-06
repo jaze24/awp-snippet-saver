@@ -50,20 +50,20 @@ export default function SnippetsIndex() {
   }, [location.search]);
 
   return (
-    <div className="min-h-screen grid grid-cols-12 border-slate-200 dark:border-slate-700">
-      <div className="col-span-3 rounded-l bg-slate-50 dark:bg-slate-800 border border-inherit">
+    <div className="min-h-screen grid grid-cols-12 border-zinc-200 dark:border-zinc-700">
+      <div className="col-span-3 rounded-l bg-zinc-50 dark:bg-zinc-800 border border-inherit">
         <div className="flex justify-between items-center border-b border-inherit">
           <h1 className="text-2xl px-4 font-bold">
             <Link
               to="/snippets"
-              className="hover:text-slate-500 transition-colors">
+              className="hover:text-zinc-500 transition-colors">
               My code snippets
             </Link>
           </h1>
           <Link
             to="/snippets/new"
             tabIndex={0}
-            className="block isolate text-slate-400 hover:text-slate-600 transition-colors p-4 border-l border-inherit">
+            className="block isolate text-zinc-400 hover:text-zinc-600 transition-colors p-4 border-l border-inherit">
             <PlusIcon width={24} height={24} />
           </Link>
         </div>
@@ -79,16 +79,16 @@ export default function SnippetsIndex() {
               name="q"
               placeholder="Search by title"
               defaultValue={searchQuery}
-              className="px-4 py-2 flex-grow bg-slate-50 dark:bg-slate-800 isolate"
+              className="px-4 py-2 flex-grow bg-zinc-50 dark:bg-zinc-800 isolate"
             />
             <button
               type="submit"
-              className="px-4 py-2 text-slate-400 hover:text-slate-600 transition-colors isolate">
+              className="px-4 py-2 text-zinc-400 hover:text-zinc-600 transition-colors isolate">
               <SearchIcon width={20} height={20} />
             </button>
           </div>
           <div className="flex flex-row items-center border-inherit">
-            <span className="pl-4 text-sm text-slate-400 flex-grow">
+            <span className="pl-4 text-sm text-zinc-400 flex-grow">
               Sort by:
             </span>
             <SortFilter value="title" searchParams={searchParams}>
@@ -111,9 +111,9 @@ export default function SnippetsIndex() {
                 <Link
                   to={`${snippet._id}?${searchParams.toString()}`}
                   className={[
-                    "block p-4 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors",
+                    "block p-4 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors",
                     params.snippetId === snippet._id &&
-                      "bg-slate-100 dark:bg-slate-900 shadow-inner",
+                      "bg-zinc-100 dark:bg-zinc-900 shadow-inner",
                   ]
                     .filter(Boolean)
                     .join(" ")}>
@@ -121,7 +121,7 @@ export default function SnippetsIndex() {
                     <span>{snippet.title}</span>
                     <span
                       className={[
-                        snippet.favorite ? "text-amber-500" : "text-slate-400",
+                        snippet.favorite ? "text-amber-500" : "text-zinc-400",
                       ]}>
                       <StarIcon
                         width={20}
@@ -131,7 +131,7 @@ export default function SnippetsIndex() {
                       />
                     </span>
                   </span>
-                  <span className="block text-slate-400 text-sm">
+                  <span className="block text-zinc-400 text-sm">
                     {new Date(snippet.updatedAt).toLocaleString()}
                   </span>
                 </Link>
@@ -140,7 +140,7 @@ export default function SnippetsIndex() {
           })}
         </ul>
       </div>
-      <div className="col-span-9 px-6 py-4 rounded-r bg-slate-50 dark:bg-slate-800 border-t border-r border-b border-inherit">
+      <div className="col-span-9 px-6 py-4 rounded-r bg-zinc-50 dark:bg-zinc-800 border-t border-r border-b border-inherit">
         <Outlet />
       </div>
     </div>
@@ -165,7 +165,7 @@ function SortFilter({ value, searchParams, children }) {
       <label
         htmlFor={id}
         tabIndex={0}
-        className="block cursor-pointer text-sm hover:text-slate-600 px-4 py-2 transition-colors text-slate-400 peer-checked:text-slate-600 dark:peer-checked:text-slate-300 peer-checked:bg-slate-100 dark:peer-checked:bg-slate-900 peer-checked:shadow-inner">
+        className="block cursor-pointer text-sm hover:text-zinc-600 px-4 py-2 transition-colors text-zinc-400 peer-checked:text-zinc-600 dark:peer-checked:text-zinc-300 peer-checked:bg-zinc-100 dark:peer-checked:bg-zinc-900 peer-checked:shadow-inner">
         {children}
       </label>
     </div>
