@@ -32,7 +32,7 @@ export default function EditSnippetForm({
             submittedValues?.programmingLanguage ??
             defaultValues?.programmingLanguage
           }
-          className="p-2 appearance-none border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-700">
+          className="p-2 appearance-none border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
           {["HTML", "CSS", "JavaScript"].map((lang) => {
             return <option key={lang}>{lang}</option>;
           })}
@@ -68,7 +68,7 @@ function Button({ type = "button", children }) {
   return (
     <button
       type={type}
-      className="rounded bg-fuchsia-700 text-white font-bold px-3 py-2">
+      className="rounded border border-zinc-300 dark:border-zinc-700 bg-zinc-300 dark:bg-zinc-600 hover:bg-zinc-400 dark:hover:bg-zinc-700 text-inherit font-bold px-4 py-2 transition-colors">
       {children}
     </button>
   );
@@ -87,8 +87,8 @@ function Input({
     defaultValue: defaultValue,
     id: id,
     className: [
-      "border rounded px-2 py-1 w-full lg:w-1/2 bg-white dark:bg-zinc-700",
-      errorMessage ? "border-red-500" : "border-zinc-200 dark:border-zinc-800",
+      "border rounded px-2 py-1 w-full lg:w-1/2 bg-white dark:bg-zinc-900",
+      errorMessage ? "border-red-500" : "border-zinc-300 dark:border-zinc-700",
     ]
       .filter(Boolean)
       .join(" "),

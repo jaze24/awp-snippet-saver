@@ -50,14 +50,12 @@ export default function SnippetPage() {
               value="favorite"
               type="submit"
               className={[
-                "block mr-2 hover:text-zinc-700 transition-colors",
-                snippet.favorite ? "text-amber-500" : "text-zinc-400",
+                "block mr-2 transition-colors",
+                snippet.favorite
+                  ? "text-amber-500"
+                  : "text-zinc-300 dark:text-zinc-600 hover:text-amber-500",
               ].join(" ")}>
-              <StarIcon
-                className="h-6 w-6"
-                stroke={snippet.favorite ? "none" : "currentColor"}
-                fill={snippet.favorite ? "currentColor" : "none"}
-              />
+              <StarIcon className="h-6 w-6" stroke="none" fill="currentColor" />
             </button>
           </Form>
           <h1 className="text-2xl font-bold">{snippet.title}</h1>

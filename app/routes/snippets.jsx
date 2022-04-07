@@ -50,8 +50,8 @@ export default function SnippetsIndex() {
   }, [location.search]);
 
   return (
-    <div className="min-h-screen grid grid-cols-12 border-zinc-200 dark:border-zinc-700">
-      <div className="col-span-3 rounded-l bg-zinc-50 dark:bg-zinc-800 border border-inherit">
+    <div className="min-h-screen grid grid-cols-12 border-zinc-300 dark:border-zinc-700">
+      <div className="col-span-3 bg-zinc-100 dark:bg-zinc-900 border-r border-inherit">
         <div className="flex justify-between items-center border-b border-inherit">
           <h1 className="text-2xl px-4 font-bold">
             <Link
@@ -79,7 +79,7 @@ export default function SnippetsIndex() {
               name="q"
               placeholder="Search by title"
               defaultValue={searchQuery}
-              className="px-4 py-2 flex-grow bg-zinc-50 dark:bg-zinc-800 isolate"
+              className="px-4 py-2 flex-grow bg-zinc-100 dark:bg-zinc-900 isolate"
             />
             <button
               type="submit"
@@ -111,25 +111,24 @@ export default function SnippetsIndex() {
                 <Link
                   to={`${snippet._id}?${searchParams.toString()}`}
                   className={[
-                    "block p-4 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors",
+                    "block p-4 hover:bg-zinc-200 dark:hover:bg-black transition-colors",
                     params.snippetId === snippet._id &&
-                      "bg-zinc-100 dark:bg-zinc-900 shadow-inner",
+                      "bg-zinc-200 dark:bg-black shadow-inner",
                   ]
                     .filter(Boolean)
                     .join(" ")}>
                   <span className="flex flex-row justify-between items-center">
                     <span>{snippet.title}</span>
-                    <span
-                      className={[
-                        snippet.favorite ? "text-amber-500" : "text-zinc-400",
-                      ]}>
-                      <StarIcon
-                        width={20}
-                        height={20}
-                        stroke={snippet.favorite ? "none" : "currentColor"}
-                        fill={snippet.favorite ? "currentColor" : "none"}
-                      />
-                    </span>
+                    {snippet.favorite ? (
+                      <span className="text-amber-500">
+                        <StarIcon
+                          width={20}
+                          height={20}
+                          stroke="none"
+                          fill="currentColor"
+                        />
+                      </span>
+                    ) : null}
                   </span>
                   <span className="block text-zinc-400 text-sm">
                     {new Date(snippet.updatedAt).toLocaleString()}
@@ -140,7 +139,7 @@ export default function SnippetsIndex() {
           })}
         </ul>
       </div>
-      <div className="col-span-9 px-6 py-4 rounded-r bg-zinc-50 dark:bg-zinc-800 border-t border-r border-b border-inherit">
+      <div className="col-span-9 px-6 py-4 bg-zinc-50 dark:bg-zinc-800">
         <Outlet />
       </div>
     </div>
@@ -165,7 +164,7 @@ function SortFilter({ value, searchParams, children }) {
       <label
         htmlFor={id}
         tabIndex={0}
-        className="block cursor-pointer text-sm hover:text-zinc-600 px-4 py-2 transition-colors text-zinc-400 peer-checked:text-zinc-600 dark:peer-checked:text-zinc-300 peer-checked:bg-zinc-100 dark:peer-checked:bg-zinc-900 peer-checked:shadow-inner">
+        className="block cursor-pointer text-sm hover:text-zinc-600 px-4 py-2 transition-colors text-zinc-400 peer-checked:text-zinc-600 dark:peer-checked:text-zinc-300 peer-checked:bg-zinc-200 dark:peer-checked:bg-black peer-checked:shadow-inner">
         {children}
       </label>
     </div>

@@ -1,6 +1,5 @@
 import {
   Links,
-  Link,
   LiveReload,
   Meta,
   Outlet,
@@ -31,7 +30,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 font-sans p-4">
+      <body className="bg-zinc-50 dark:bg-black text-zinc-800 dark:text-zinc-200 font-sans">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
