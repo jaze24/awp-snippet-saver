@@ -31,10 +31,27 @@ const snippetSchema = new Schema(
   { timestamps: true }
 );
 
+const subscriptionSchema = new Schema({
+  endpoint: {
+    type: String,
+    required: true,
+  },
+  expirationTime: Number,
+  keys: {
+    auth: String,
+    p256dh: String,
+  },
+});
+
 export const models = [
   {
     name: "Snippet",
     schema: snippetSchema,
     collection: "snippets",
+  },
+  {
+    name: "Subscription",
+    schema: subscriptionSchema,
+    collection: "subscriptions",
   },
 ];

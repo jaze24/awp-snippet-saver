@@ -24,6 +24,13 @@ export default function PushSubscribe({ applicationServerKey }) {
         applicationServerKey,
       });
       if (subscription) {
+        await fetch("/subscribe", {
+          method: "POST",
+          body: JSON.stringify(subscription),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         setIsSubscribed(true);
         sw.showNotification("Thanks for subscribing!");
       }
