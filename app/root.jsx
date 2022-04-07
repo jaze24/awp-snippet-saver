@@ -29,6 +29,7 @@ export default function App() {
       <head>
         <Meta />
         <Links />
+        <script src="/client.js" defer></script>
       </head>
       <body className="bg-zinc-50 dark:bg-black text-zinc-800 dark:text-zinc-200 font-sans">
         <Outlet />
