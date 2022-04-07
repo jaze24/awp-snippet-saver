@@ -11,6 +11,7 @@ import {
   useParams,
 } from "remix";
 import connectDb from "~/db/connectDb.server.js";
+import PushSubscribe from "~/components/PushSubscribe";
 
 const DEFAULT_SORT_FIELD = "updatedAt";
 
@@ -31,7 +32,7 @@ export async function loader({ request }) {
       [sortField]: sortField === "title" ? 1 : -1,
     })
     .lean();
-  return snippets;
+  return { snippets, applicationServerKey: process.env.VAPID_PUBLIC_KEY };
 }
 
 export default function SnippetsIndex() {
@@ -39,7 +40,7 @@ export default function SnippetsIndex() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("q");
   const params = useParams();
-  const snippets = useLoaderData();
+  const { snippets, applicationServerKey } = useLoaderData();
   const submit = useSubmit();
   const searchFormRef = useRef();
 
@@ -138,6 +139,7 @@ export default function SnippetsIndex() {
             );
           })}
         </ul>
+        <PushSubscribe applicationServerKey={applicationServerKey} />
       </div>
       <div className="col-span-9 px-6 py-4 bg-zinc-50 dark:bg-zinc-800">
         <Outlet />
