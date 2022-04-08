@@ -1,7 +1,8 @@
 import { redirect, json, useActionData } from "remix";
-import connectDb from "~/db/connectDb.server";
+import connectDb from "~/db/connectDb.server.js";
 
 import EditSnippetForm from "~/components/EditSnippetForm.jsx";
+import { notifyAll } from "~/db/sendNotification.server";
 
 export async function action({ request }) {
   const form = await request.formData();
@@ -9,6 +10,9 @@ export async function action({ request }) {
   const db = await connectDb();
   try {
     const newSnippet = await db.models.Snippet.create(formValues);
+    await notifyAll({
+      title: `A new snippet was created: /snippets/${newSnippet._id}`,
+    });
     return redirect(`/snippets/${newSnippet._id}`);
   } catch (error) {
     return json({ errors: error.errors, values: formValues }, { status: 400 });

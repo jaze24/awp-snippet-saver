@@ -1,5 +1,6 @@
 self.addEventListener("install", () => {
   console.log("SW installed");
+  self.skipWaiting();
 });
 
 self.addEventListener("activate", () => {
@@ -7,5 +8,6 @@ self.addEventListener("activate", () => {
 });
 
 self.addEventListener("push", (event) => {
-  console.log("Push event received", event);
+  const data = event.data.json();
+  self.registration.showNotification(data.title);
 });

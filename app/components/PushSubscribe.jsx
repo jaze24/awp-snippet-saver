@@ -7,9 +7,11 @@ export default function PushSubscribe({ applicationServerKey }) {
   useEffect(() => {
     async function checkSubscription() {
       const sw = await navigator.serviceWorker.ready;
-      const subscription = await sw.pushManager.getSubscription();
-      if (subscription) {
-        setIsSubscribed(true);
+      if ("pushManager" in sw) {
+        const subscription = await sw.pushManager.getSubscription();
+        if (subscription) {
+          setIsSubscribed(true);
+        }
       }
     }
     checkSubscription();
@@ -38,6 +40,13 @@ export default function PushSubscribe({ applicationServerKey }) {
       // Unsubscribe
       const subscription = await sw.pushManager.getSubscription();
       if (subscription) {
+        await fetch("/unsubscribe", {
+          method: "POST",
+          body: JSON.stringify(subscription),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         await subscription.unsubscribe();
         setIsSubscribed(false);
         sw.showNotification("Sorry to see you go");
