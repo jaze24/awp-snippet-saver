@@ -30,6 +30,11 @@ export default function Login() {
           Login
         </button>
       </Form>
+      <Form method="post" action="/logout">
+        <button type="submit" className="my-3 p-2 border rounded">
+          Logout
+        </button>
+      </Form>
     </div>
   );
 }
