@@ -1,15 +1,37 @@
-import { Form, json, redirect, useLoaderData } from "remix";
+import {
+  Form,
+  json,
+  Link,
+  redirect,
+  useActionData,
+  useLoaderData,
+} from "remix";
 import { getSession, commitSession } from "~/sessions.js";
+import connectDb from "~/db/connectDb.server.js";
 
 export async function action({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
-  session.set("userId", "1001");
+  const db = await connectDb();
+  const form = await request.formData();
 
-  return redirect("/login", {
-    headers: {
-      "Set-Cookie": await commitSession(session),
-    },
+  const user = await db.models.User.findOne({
+    username: form.get("username").trim(),
+    password: form.get("password").trim(),
   });
+
+  if (user) {
+    session.set("userId", user._id);
+    return redirect("/login", {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    });
+  } else {
+    return json(
+      { errorMessage: "User not found or password didn't match" },
+      { status: 401 }
+    );
+  }
 }
 
 export async function loader({ request }) {
@@ -21,18 +43,46 @@ export async function loader({ request }) {
 
 export default function Login() {
   const { userId } = useLoaderData();
+  const actionData = useActionData();
+
+  if (userId) {
+    return (
+      <div>
+        <p>You are already logged in as user id {userId}.</p>
+        <Link to="/" className="underline">
+          Go home
+        </Link>
+        <Form method="post" action="/logout">
+          <button type="submit" className="my-3 p-2 border rounded">
+            Logout
+          </button>
+        </Form>
+      </div>
+    );
+  }
   return (
     <div className="m-3">
-      <h2>Current userId:</h2>
-      <pre className="my-3 p-4 border rounded">{userId}</pre>
-      <Form reloadDocument method="post">
+      <h2>Log in</h2>
+      {actionData?.errorMessage ? (
+        <p className="text-red-500 font-bold my-3">{actionData.errorMessage}</p>
+      ) : null}
+      <Form method="post" className="text-inherit">
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Username"
+          className="block my-3 border rounded px-2 py-1 w-full lg:w-1/2 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700"
+        />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          className="block my-3 border rounded px-2 py-1 w-full lg:w-1/2 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700"
+        />
         <button type="submit" className="my-3 p-2 border rounded">
-          Login
-        </button>
-      </Form>
-      <Form method="post" action="/logout">
-        <button type="submit" className="my-3 p-2 border rounded">
-          Logout
+          Log in
         </button>
       </Form>
     </div>
