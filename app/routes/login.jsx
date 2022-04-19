@@ -1,26 +1,30 @@
 import { Form, json, redirect, useLoaderData } from "remix";
-import { sessionCookie } from "~/cookies.js";
+import { getSession, commitSession } from "~/sessions.js";
 
-export async function action() {
+export async function action({ request }) {
+  const session = await getSession(request.headers.get("Cookie"));
+  session.set("userId", "1001");
+
   return redirect("/login", {
     headers: {
-      "Set-Cookie": await sessionCookie.serialize({ userId: "1001" }),
+      "Set-Cookie": await commitSession(session),
     },
   });
 }
 
 export async function loader({ request }) {
-  return json(await sessionCookie.parse(request.headers.get("Cookie")));
+  const session = await getSession(request.headers.get("Cookie"));
+  return json({
+    userId: session.get("userId"),
+  });
 }
 
 export default function Login() {
-  const cookie = useLoaderData();
+  const { userId } = useLoaderData();
   return (
     <div className="m-3">
-      <h2>Current session cookie:</h2>
-      <pre className="my-3 p-4 border rounded">
-        {JSON.stringify(cookie, null, 2)}
-      </pre>
+      <h2>Current userId:</h2>
+      <pre className="my-3 p-4 border rounded">{userId}</pre>
       <Form reloadDocument method="post">
         <button type="submit" className="my-3 p-2 border rounded">
           Login
