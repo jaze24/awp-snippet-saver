@@ -6,6 +6,7 @@ import {
   useActionData,
   useLoaderData,
 } from "remix";
+import bcrypt from "bcryptjs";
 import { getSession, commitSession } from "~/sessions.js";
 import connectDb from "~/db/connectDb.server.js";
 
@@ -16,11 +17,20 @@ export async function action({ request }) {
 
   const user = await db.models.User.findOne({
     username: form.get("username").trim(),
-    password: form.get("password").trim(),
   });
 
+  let isCorrectPassword = false;
+
   if (user) {
+    isCorrectPassword = await bcrypt.compare(
+      form.get("password").trim(),
+      user.password
+    );
+  }
+
+  if (user && isCorrectPassword) {
     session.set("userId", user._id);
+    // TODO: redirect somewhere else
     return redirect("/login", {
       headers: {
         "Set-Cookie": await commitSession(session),
