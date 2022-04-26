@@ -7,7 +7,7 @@ import {
   useLoaderData,
 } from "remix";
 import bcrypt from "bcryptjs";
-import { getSession, commitSession } from "~/sessions.js";
+import { getSession, commitSession } from "~/sessions.server.js";
 import connectDb from "~/db/connectDb.server.js";
 
 export async function action({ request }) {
