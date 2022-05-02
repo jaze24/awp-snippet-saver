@@ -1,5 +1,10 @@
 import { useEffect, useRef } from "react";
-import { SearchIcon, PlusIcon, StarIcon } from "@heroicons/react/outline";
+import {
+  SearchIcon,
+  PlusIcon,
+  StarIcon,
+  LogoutIcon,
+} from "@heroicons/react/outline";
 import {
   Outlet,
   useLoaderData,
@@ -59,6 +64,16 @@ export default function SnippetsIndex() {
     <div className="min-h-screen grid grid-cols-12 border-zinc-300 dark:border-zinc-700">
       <div className="col-span-3 bg-zinc-100 dark:bg-zinc-900 border-r border-inherit">
         <div className="flex justify-between items-center border-b border-inherit">
+          <Form
+            method="post"
+            action="/logout"
+            className="border-r border-inherit">
+            <button
+              type="submit"
+              className="p-4 text-zinc-400 hover:text-red-600">
+              <LogoutIcon width={20} height={20} />
+            </button>
+          </Form>
           <h1 className="text-2xl px-4 font-bold">
             <Link
               to="/snippets"
