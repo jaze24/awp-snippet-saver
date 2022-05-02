@@ -1,14 +1,24 @@
-import { Form, redirect, json, useActionData } from "remix";
+import { redirect, json, useActionData } from "remix";
 import connectDb from "~/db/connectDb.server";
 
 import EditSnippetForm from "~/components/EditSnippetForm.jsx";
+import { requireUserSession } from "~/sessions.server.js";
+
+export async function loader({ request }) {
+  await requireUserSession(request);
+  return null;
+}
 
 export async function action({ request }) {
+  const session = await requireUserSession(request);
   const form = await request.formData();
   const formValues = Object.fromEntries(form);
   const db = await connectDb();
   try {
-    const newSnippet = await db.models.Snippet.create(formValues);
+    const newSnippet = await db.models.Snippet.create({
+      ...formValues,
+      userId: session.get("userId"),
+    });
     return redirect(`/snippets/${newSnippet._id}`);
   } catch (error) {
     return json({ errors: error.errors, values: formValues }, { status: 400 });

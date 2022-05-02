@@ -8,9 +8,12 @@ import {
   useLocation,
 } from "remix";
 import { TrashIcon, StarIcon, PencilAltIcon } from "@heroicons/react/outline";
+import CatchBoundary from "~/components/CatchBoundary";
+import ErrorBoundary from "~/components/ErrorBoundary";
+import { requireUserSession } from "~/sessions.server.js";
 import connectDb from "~/db/connectDb.server.js";
 
-export async function loader({ params }) {
+export async function loader({ request, params }) {
   const db = await connectDb();
   const snippet = await db.models.Snippet.findById(params.snippetId).lean();
   if (!snippet) {
@@ -18,10 +21,17 @@ export async function loader({ params }) {
       status: 404,
     });
   }
+  const session = await requireUserSession(request);
+  if (session.get("userId") !== snippet.userId?.toString()) {
+    throw new Response(`That's not your snippet`, {
+      status: 403,
+    });
+  }
   return json(snippet);
 }
 
 export async function action({ params, request }) {
+  await requireUserSession(request);
   const formData = await request.formData();
   const db = await connectDb();
   switch (formData.get("_action")) {
@@ -104,22 +114,4 @@ export default function SnippetPage() {
   );
 }
 
-export function CatchBoundary() {
-  const caught = useCatch();
-  return (
-    <div>
-      <h1>
-        {caught.status} {caught.statusText}
-      </h1>
-      <h2>{caught.data}</h2>
-    </div>
-  );
-}
-
-export function ErrorBoundary({ error }) {
-  return (
-    <h1 className="text-red-500 font-bold">
-      {error.name}: {error.message}
-    </h1>
-  );
-}
+export { CatchBoundary, ErrorBoundary };
