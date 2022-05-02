@@ -30,8 +30,7 @@ export async function action({ request }) {
 
   if (user && isCorrectPassword) {
     session.set("userId", user._id);
-    // TODO: redirect somewhere else
-    return redirect("/login", {
+    return redirect("/snippets", {
       headers: {
         "Set-Cookie": await commitSession(session),
       },
@@ -91,9 +90,15 @@ export default function Login() {
           placeholder="Password"
           className="block my-3 border rounded px-2 py-1 w-full lg:w-1/2 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700"
         />
-        <button type="submit" className="my-3 p-2 border rounded">
-          Log in
-        </button>
+        <div className="flex flex-row items-center gap-3">
+          <button type="submit" className="my-3 p-2 border rounded">
+            Log in
+          </button>
+          <span className="italic">or</span>
+          <Link to="/register" className="underline">
+            Sign up
+          </Link>
+        </div>
       </Form>
     </div>
   );

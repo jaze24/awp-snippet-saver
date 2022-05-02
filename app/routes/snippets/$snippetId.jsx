@@ -31,6 +31,7 @@ export async function loader({ request, params }) {
 }
 
 export async function action({ params, request }) {
+  await requireUserSession(request);
   const formData = await request.formData();
   const db = await connectDb();
   switch (formData.get("_action")) {
