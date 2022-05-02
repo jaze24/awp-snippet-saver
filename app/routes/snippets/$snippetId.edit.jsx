@@ -6,14 +6,23 @@ import {
   useLocation,
 } from "remix";
 import connectDb from "~/db/connectDb.server.js";
+import CatchBoundary from "~/components/CatchBoundary";
+import ErrorBoundary from "~/components/ErrorBoundary";
+import { requireUserSession } from "~/sessions.server.js";
 import EditSnippetForm from "~/components/EditSnippetForm.jsx";
 
-export async function loader({ params }) {
+export async function loader({ request, params }) {
   const db = await connectDb();
   const snippet = await db.models.Snippet.findById(params.snippetId).lean();
   if (!snippet) {
     throw new Response(`Couldn't find snippet with id ${params.snippetId}`, {
       status: 404,
+    });
+  }
+  const session = await requireUserSession(request);
+  if (session.get("userId") !== snippet.userId?.toString()) {
+    throw new Response(`That's not your snippet`, {
+      status: 403,
     });
   }
   return json(snippet);
@@ -57,3 +66,5 @@ export default function EditSnippet() {
     </div>
   );
 }
+
+export { CatchBoundary, ErrorBoundary };

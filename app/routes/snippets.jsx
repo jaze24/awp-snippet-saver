@@ -10,11 +10,14 @@ import {
   useLocation,
   useParams,
 } from "remix";
+import { requireUserSession } from "~/sessions.server.js";
 import connectDb from "~/db/connectDb.server.js";
 
 const DEFAULT_SORT_FIELD = "updatedAt";
 
 export async function loader({ request }) {
+  const session = await requireUserSession(request);
+  const userId = session.get("userId");
   const url = new URL(request.url);
   const searchQuery = url.searchParams.get("q");
   const sortField = url.searchParams.get("sort") ?? DEFAULT_SORT_FIELD;
@@ -24,8 +27,11 @@ export async function loader({ request }) {
     searchQuery
       ? {
           title: { $regex: new RegExp(searchQuery, "i") },
+          userId: userId,
         }
-      : {}
+      : {
+          userId: userId,
+        }
   )
     .sort({
       [sortField]: sortField === "title" ? 1 : -1,
