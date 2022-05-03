@@ -25,7 +25,9 @@ export default async function connectDb() {
     // ...but overwrite all models in development to ensure we pick up any changes made in schemas
     if (NODE_ENV === "development") {
       for (const model of models) {
-        mongoose.connection.deleteModel(model.name);
+        if (mongoose.connection.models[model.name]) {
+          mongoose.connection.deleteModel(model.name);
+        }
         mongoose.connection.model(model.name, model.schema, model.collection);
       }
     }
