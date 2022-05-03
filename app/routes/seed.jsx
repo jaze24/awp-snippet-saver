@@ -1,4 +1,5 @@
-import { Form, json, Link, redirect, useLoaderData } from "remix";
+import { json, redirect } from "@remix-run/node";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import connectDb from "~/db/connectDb.server";
 import seedData from "~/db/seed.json";
 

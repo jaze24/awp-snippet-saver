@@ -1,11 +1,5 @@
-import {
-  Form,
-  json,
-  Link,
-  redirect,
-  useActionData,
-  useLoaderData,
-} from "remix";
+import { json, redirect } from "@remix-run/node";
+import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import bcrypt from "bcryptjs";
 import { getSession, commitSession } from "~/sessions.server.js";
 import connectDb from "~/db/connectDb.server.js";

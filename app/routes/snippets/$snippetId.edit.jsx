@@ -1,10 +1,5 @@
-import {
-  json,
-  redirect,
-  useActionData,
-  useLoaderData,
-  useLocation,
-} from "remix";
+import { json, redirect } from "@remix-run/node";
+import { useActionData, useLoaderData, useLocation } from "@remix-run/react";
 import connectDb from "~/db/connectDb.server.js";
 import CatchBoundary from "~/components/CatchBoundary";
 import ErrorBoundary from "~/components/ErrorBoundary";

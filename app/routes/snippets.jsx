@@ -5,16 +5,18 @@ import {
   StarIcon,
   LogoutIcon,
 } from "@heroicons/react/outline";
+
 import {
+  Form,
+  Link,
   Outlet,
   useLoaderData,
-  Link,
-  Form,
-  useSearchParams,
-  useSubmit,
   useLocation,
   useParams,
-} from "remix";
+  useSearchParams,
+  useSubmit,
+} from "@remix-run/react";
+
 import { requireUserSession } from "~/sessions.server.js";
 import connectDb from "~/db/connectDb.server.js";
 

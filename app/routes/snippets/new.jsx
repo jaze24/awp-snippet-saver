@@ -1,4 +1,5 @@
-import { redirect, json, useActionData } from "remix";
+import { json, redirect } from "@remix-run/node";
+import { useActionData } from "@remix-run/react";
 import connectDb from "~/db/connectDb.server";
 
 import EditSnippetForm from "~/components/EditSnippetForm.jsx";
