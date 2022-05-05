@@ -17,6 +17,9 @@ import {
   useSubmit,
 } from "@remix-run/react";
 
+import CatchBoundary from "~/components/CatchBoundary";
+import ErrorBoundary from "~/components/ErrorBoundary";
+
 import { requireUserSession } from "~/sessions.server.js";
 import connectDb from "~/db/connectDb.server.js";
 
@@ -193,3 +196,5 @@ function SortFilter({ value, searchParams, children }) {
     </div>
   );
 }
+
+export { CatchBoundary, ErrorBoundary };
