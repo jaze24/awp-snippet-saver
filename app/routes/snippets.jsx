@@ -17,7 +17,7 @@ import {
   useSubmit,
 } from "@remix-run/react";
 
-import CatchBoundary from "~/components/CatchBoundary";
+import DefaultCatchBoundary from "~/components/CatchBoundary";
 import ErrorBoundary from "~/components/ErrorBoundary";
 
 import { requireUserSession } from "~/sessions.server.js";
@@ -129,7 +129,7 @@ export default function SnippetsIndex() {
           </div>
         </Form>
         <ul className="border-b border-inherit">
-          {snippets.map((snippet, i) => {
+          {snippets?.map((snippet, i) => {
             return (
               <li
                 key={snippet._id}
@@ -197,4 +197,9 @@ function SortFilter({ value, searchParams, children }) {
   );
 }
 
-export { CatchBoundary, ErrorBoundary };
+export function CatchBoundary() {
+  <div className="border-3 border-red-600 p-4">
+    <DefaultCatchBoundary />
+  </div>;
+}
+export { ErrorBoundary };

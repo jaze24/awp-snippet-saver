@@ -5,6 +5,8 @@ self.importScripts("/build/manifest-393AE91F.js");
 
 const manifest = window.__remixManifest;
 
+const START_URL = "/snippets";
+
 const MANIFEST_CACHE = `assets-${manifest.version}`;
 const DYNAMIC_CACHE = "dynamic-cache";
 
@@ -15,7 +17,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(MANIFEST_CACHE).then((cache) => {
       cache
-        .addAll(manifestUrls)
+        .addAll([START_URL, ...manifestUrls])
         .then(() => {
           console.log(
             `${manifestUrls.length} asset URLs from manifest version ${manifest.version} cached`
@@ -27,11 +29,6 @@ self.addEventListener("install", (event) => {
             error
           );
         });
-    })
-  );
-  event.waitUntil(
-    caches.open(DYNAMIC_CACHE).then((cache) => {
-      cache.add("/snippets");
     })
   );
 });
@@ -65,7 +62,22 @@ self.addEventListener("fetch", (event) => {
 
   // HTML ------------------------------------------------------------
   if (isHtmlRequest(event.request)) {
-    event.respondWith(networkFallbackToCache(event));
+    event.respondWith(
+      networkFallbackToCache(event).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        console.log(
+          `Cache miss for ${event.request.url}, redirecting to ${START_URL}`
+        );
+        return new Response(null, {
+          status: 302,
+          headers: {
+            Location: START_URL,
+          },
+        });
+      })
+    );
   }
 
   // Build assets ----------------------------------------------------
@@ -80,7 +92,25 @@ self.addEventListener("fetch", (event) => {
 
   // Loader requests -------------------------------------------------
   if (isLoaderRequest(event.request)) {
-    event.respondWith(networkThenCacheFallbackToCache(event, DYNAMIC_CACHE));
+    event.respondWith(
+      networkThenCacheFallbackToCache(event, DYNAMIC_CACHE).then(
+        (cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          console.log(
+            `Cache miss for ${event.request.url}, throwing offline response`
+          );
+          return new Response("You appear to be offline", {
+            status: 503,
+            statusText: "Network unavailable",
+            headers: {
+              "X-Remix-Catch": "yes",
+            },
+          });
+        }
+      )
+    );
   }
 });
 
